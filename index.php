@@ -1,5 +1,7 @@
 <?php
 #入口文件
-define("APP_PATH", realpath(dirname(__FILE__)));
-$app = new Yaf_Application(APP_PATH . '/conf/application.ini','product');
+define('BASE_PATH', realpath(dirname(__FILE__)));
+define('APP_PATH', BASE_PATH.DIRECTORY_SEPARATOR.'application');
+define('HTTP_HOST', $_SERVER['HTTP_HOST']);
+$app = new Yaf_Application(BASE_PATH .DIRECTORY_SEPARATOR.'conf'.DIRECTORY_SEPARATOR.'application.ini','product');
 $app->bootstrap()->run();

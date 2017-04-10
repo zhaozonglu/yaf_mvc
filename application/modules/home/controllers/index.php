@@ -11,8 +11,13 @@ class IndexController extends BaseController{
         $this->display('index');
     }
     public function demoAction(){
-        $mess = new Home_MessageModel();
-        var_dump($mess);
+        $msg = load_class('message');
+        $dao = load_class('base', 'dao');
+        var_dump($dao);
+        if($msg){
+            $m = new MessageModel();
+            var_dump($m->testmsg());
+        }
     }
     public function productAction($age){
         echo "<br>product<br>";
