@@ -1,13 +1,15 @@
 <?php
 class Bootstrap extends Yaf_Bootstrap_Abstract{
     public function _initConfig(){
-        $config = new Yaf_Config_Ini(BASE_PATH.'/conf/application.ini','test');
-        Yaf_Registry::set('config', $config);
+        
+        $env = Yaf_Application::app()->environ();
+        $app_config = new Yaf_Config_Ini(BASE_PATH.'/conf/application.ini', $env);
+        Yaf_Registry::set('config', $app_config);
     }
 
     public function _initPlugin(Yaf_Dispatcher $dispatcher){
-        $user = new AutoloadPlugin();
-        $dispatcher->registerPlugin($user);
+        // $user = new AutoloadPlugin();
+        // $dispatcher->registerPlugin($user);
     }
 
     public function _initRouter(Yaf_Dispatcher $dispatcher){
@@ -35,5 +37,6 @@ class MyRouter implements Yaf_Route_Interface{
         $req->module = $this->module;
     }
     public function assemble(array $info, array $query=array()){
+        return true;
     }
 }

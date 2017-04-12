@@ -1,6 +1,8 @@
 <?php
 class MessageModel extends BaseModel{
     public function testmsg(){
-        echo "mes222-----";
+        $dao = load_class('base', 'dao');
+        $blog = load_class('blog','dao/index');
+        var_dump($dao, $blog);
     }
 }

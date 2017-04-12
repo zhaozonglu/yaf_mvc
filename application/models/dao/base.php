@@ -1,4 +1,4 @@
 <?php
-class Dao_BaseModel{
+class Dao_BaseModel extends BaseModel{
     
 }

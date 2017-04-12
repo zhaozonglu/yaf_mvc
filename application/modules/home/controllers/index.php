@@ -12,8 +12,9 @@ class IndexController extends BaseController{
     }
     public function demoAction(){
         $msg = load_class('message');
-        $dao = load_class('base', 'dao');
-        $blog = load_class('blog','dao/index');
+        echo "<pre>";
+        $msg->testmsg();
+        var_dump($msg);
     }
     public function productAction($age){
         echo "<br>product<br>";
