@@ -4,7 +4,7 @@ class AutoloadPlugin extends Yaf_Plugin_Abstract{
     private $fileload;
 
     public function routerStartup(Yaf_Request_Abstract $req, Yaf_Response_Abstract $res){
-        $this->config = Yaf_Application::app()->getConfig();
+        $this->config = Yaf_Registry::get('config');
         $this->fileload = Yaf_Loader::getInstance();
     }
 

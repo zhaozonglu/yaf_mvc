@@ -1,6 +1,13 @@
 <?php
 /**
- * Model类加载方法
+ * 公共函数库
+ */
+
+/**
+ * 加载本地models类库
+ * @param String $class 类名
+ * @param String $directory 路径名【dao/子文件夹  service/子文件夹 为空时为当前模块下models】
+ * @param Mix    $param 参数
  */
 if(!function_exists('load_class')){
     function load_class($class, $directory='', $param = NULL){
@@ -33,3 +40,16 @@ if(!function_exists('load_class')){
         return false;
     }
 }
+
+/**
+ * 加载第三方类库扩展
+ * @param string $ext 入口文件路径
+ */
+if(!function_exists('load_ext')){
+    function load_ext($ext){
+        $extlib = Yaf_Registry::get('config')->application->extlib;
+        $in_file = APP_PATH .DIRECTORY_SEPARATOR.$extlib.DIRECTORY_SEPARATOR.$ext;
+        return Yaf_Loader::import($in_file);
+    }
+}
+

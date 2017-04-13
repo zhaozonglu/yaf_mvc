@@ -1,6 +1,6 @@
 <?php
-class Dao_Index_BlogModel extends Dao_BaseModel{
-    public function showlist(){
-        echo "sholist";
-    }
+class Dao_Index_BlogModel extends Db_Mongodb{
+    protected $dbname = 'fj_house';
+    protected $collection = 'communityeval';
+    protected $namespace = 'fj_house.communityeval';
 }
