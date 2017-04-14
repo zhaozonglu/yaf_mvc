@@ -2,7 +2,7 @@
 /**
  * 自定义路由类
  */
-class Router_Default implements Yaf_Route_Interface{
+class Router_Default extends Yaf_Request_Abstract implements Yaf_Route_Interface{
     public function assemble(array $info, array $query = NULL) {
         return true;
     }

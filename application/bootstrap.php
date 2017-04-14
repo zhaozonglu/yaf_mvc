@@ -12,7 +12,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     }
 
     public function _initRouter(Yaf_Dispatcher $dispatcher){
-        $dispatcher->getRouter()->addRoute('default', new Route_Default());
+        $dispatcher->getRouter()->addRoute('default', new Router_Default());
     }
 
     public function __initView(Yaf_Dispatcher $dispatcher){
