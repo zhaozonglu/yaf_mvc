@@ -98,6 +98,11 @@ abstract class Db_Mongodb{
                 case 'update':
                     $bulkWrite->update($data, $where);
                     break;
+                case 'batchInsert':
+                    foreach ($data as $item) {
+                        $bulkWrite->insert($item);
+                    }
+                    break;
                 default:
                     $bulkWrite->{$type}($data);
                     break;
@@ -108,6 +113,14 @@ abstract class Db_Mongodb{
 
     public function insert($data){
         if($bulk = $this->initBulkWrite($data, 'insert') && $manager = $this->getManager()){
+            $manager->executeBulkWrite($this->namespace, $bulk);
+        }else{
+            return false;
+        }
+    }
+
+    public function batchInsert($data){
+        if($bulk = $this->initBulkWrite($data, 'batchInsert') && $manager = $this->getManager()){
             $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;

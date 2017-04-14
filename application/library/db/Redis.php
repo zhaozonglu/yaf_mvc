@@ -1,4 +1,7 @@
 <?php
+/**
+ * Redis操作工具类
+ */
 class Db_Redis{
     protected static $_instance = [];
 

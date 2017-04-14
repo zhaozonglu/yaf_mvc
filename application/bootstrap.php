@@ -2,10 +2,6 @@
 class Bootstrap extends Yaf_Bootstrap_Abstract{
     public function _initConfig(){
         $env = Yaf_Application::app()->environ();
-        $conf = Yaf_Application::app()->getConfig('product');
-        echo "<pre>";
-        var_dump($conf);
-        echo "<------------><br>";
         $app_config = new Yaf_Config_Ini(BASE_PATH.'/conf/application.ini', $env);
         Yaf_Registry::set('config', $app_config);
     }
@@ -16,17 +12,13 @@ class Bootstrap extends Yaf_Bootstrap_Abstract{
     }
 
     public function _initRouter(Yaf_Dispatcher $dispatcher){
-        $router = $dispatcher->getRouter();
-        $config = Yaf_Registry::get('config');
-        //域名映射模块
-        foreach ($config->host_module as $module => $host) {
-            $arr_host = explode(',', $host);
-            if(in_array(HTTP_HOST, $arr_host)){
-                $router->addRoute($module, new Util_Router($module));
-                break;
-            }else{
-                continue;
-            }
-        }
+        $dispatcher->getRouter()->addRoute('default', new Route_Default());
+    }
+
+    public function __initView(Yaf_Dispatcher $dispatcher){
+        //关闭自动渲染
+        $dispatcher->autoRender(false);
+        //返回响应对象
+        $dispatcher->returnResponse(true);
     }
 }
