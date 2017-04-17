@@ -30,6 +30,8 @@ abstract class Db_Mongodb{
      */
     protected $namespace;
 
+    private $cmd = [];
+
     /**
      * MongoDB driver
      * @var MongoDB\Driver\Manager
@@ -90,7 +92,7 @@ abstract class Db_Mongodb{
     }
 
     protected function initBulkWrite($data, $type = 'insert', $where = []){
-        if(!in_array($type, ['delete','update','insert','count'])){
+        if(!in_array($type, ['delete','update','insert','count', 'batchInsert'])){
             throw new Exception("Bad BulkWrite Type");
         }else{
             $bulkWrite = new MongoDB\Driver\BulkWrite();
@@ -113,7 +115,7 @@ abstract class Db_Mongodb{
 
     public function insert($data){
         if($bulk = $this->initBulkWrite($data, 'insert') && $manager = $this->getManager()){
-            $manager->executeBulkWrite($this->namespace, $bulk);
+            return $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;
         }
@@ -121,7 +123,7 @@ abstract class Db_Mongodb{
 
     public function batchInsert($data){
         if($bulk = $this->initBulkWrite($data, 'batchInsert') && $manager = $this->getManager()){
-            $manager->executeBulkWrite($this->namespace, $bulk);
+            return $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;
         }
@@ -129,7 +131,7 @@ abstract class Db_Mongodb{
 
     public function update($data, $where){
         if($bulk = $this->initBulkWrite($data, 'update', $where) && $manager = $this->getManager()){
-            $manager->executeBulkWrite($this->namespace, $bulk);
+            return $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;
         }
@@ -137,7 +139,7 @@ abstract class Db_Mongodb{
 
     public function delete($data){
         if($bulk = $this->initBulkWrite($data, 'delete') && $manager = $this->getManager()){
-            $manager->executeBulkWrite($this->namespace, $bulk);
+            return $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;
         }
@@ -145,7 +147,7 @@ abstract class Db_Mongodb{
 
     public function count($data){
         if($bulk = $this->initBulkWrite($data, 'count') && $manager = $this->getManager()){
-            $manager->executeBulkWrite($this->namespace, $bulk);
+            return $manager->executeBulkWrite($this->namespace, $bulk);
         }else{
             return false;
         } 
@@ -156,6 +158,35 @@ abstract class Db_Mongodb{
         $query = new MongoDB\Driver\Query($match, $options);
         if($query && $manager = $this->getManager()){
             return $manager->executeQuery($this->namespace, $query); 
+        }
+        return false;
+    }
+
+    /**
+     * mongodb 聚合
+     * @param  array $pipeline 聚合管道
+     */
+    public function aggregate($pipeline){
+        if(!empty($pipeline)){
+            $cmd = [
+                'aggregate'=> $this->collection,
+                'pipeline' => $pipeline,
+                'cursor'   => new stdClass();
+            ];
+            return $this->command($cmd);
+        }
+        return false;
+    }
+
+
+    /**
+     * 直接执行command
+     * @param  array $cmd command数组
+     */
+    public function command($cmd){
+        if(!empty($cmd) && $manager = $this->getManager()){
+            $command = new MongoDB\Driver\Command($cmd);
+            return $manager->executeCommand($this->dbname, $command);
         }
         return false;
     }
